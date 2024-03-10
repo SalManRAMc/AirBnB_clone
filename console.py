@@ -124,6 +124,8 @@ class HBNBCommand(cmd.Cmd):
             return
         if args[1] == "all()":
             self.do_all(args[0])
+        elif args[1] == "create()":
+            self.do_create(arg[0])
         elif args[1] == "count()":
             print(len([v for k, v in models.storage.all().items()
                        if v.__class__.__name__ == args[0]]))
