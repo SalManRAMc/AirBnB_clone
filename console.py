@@ -5,7 +5,7 @@ from models.base_model import BaseModel
 class HBNBCommand(cmd.Cmd):
     """Holberton BNB THE CONSOLE App"""
 
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
 
     __classes={
         "BaseModel": BaseModel,
