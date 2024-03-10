@@ -24,9 +24,6 @@ class HBNBCommand(cmd.Cmd):
         """Prints an emptyline"""
         pass
 
-    def d
-
-
     def default(self, arg):
         """if an argument is passed to console that is unknown, this function is called"""
         print(f"{arg} not found")
