@@ -21,7 +21,7 @@ class BaseModel():
         result_dict['__class__'] = self.__class__.__name__
 
         # Convert created_at and updated_at into their ISO Format
-        result_dict['created_at'] = result_dict['created_at'].isoformat()
-        result_dict['updated_at'] = result_dict['updated_at'].isoformat()
+        result_dict['created_at'] = self.created_at.isoformat()
+        result_dict['updated_at'] = self.updated_at.isoformat()
 
         return result_dict
