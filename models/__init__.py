@@ -2,5 +2,5 @@
 """ ___init__"""
 from models.engine.file_storage import FileStorage
 
-storage = FileStorage()
+storage = FileStorage("file.json")
 storage.reload()

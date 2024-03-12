@@ -2,7 +2,7 @@ import json
 from json.decoder import JSONDecodeError
 import os
 
-class FileStorage:
+class FileStorage():
     """Initialise FileStorage"""
         
     __file_path = "file.json"
