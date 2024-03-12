@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 import cmd
+import re
+import shlex
 from models.base_model import BaseModel
 from models.state import State
 from models.review import Review
@@ -26,6 +28,8 @@ class HBNBCommand(cmd.Cmd):
     prompt = "(hbnb) "
 
     def do_create(self, arg):
+        """Creates an instance of whatever class
+        user inputs if it's valid"""
         if not arg:
             print("** class name missing **")
             return
@@ -38,6 +42,7 @@ class HBNBCommand(cmd.Cmd):
         print(new_instance.id)
 
     def do_show(self, arg):
+        """Show user what data of a class exists"""
         if not arg:
             print("** class name missing **")
             return
@@ -55,6 +60,7 @@ class HBNBCommand(cmd.Cmd):
         print(models.storage.all()[key])
 
     def do_destroy(self, arg):
+        """Destroy all data about a class"""
         if not arg:
             print("** class name missing **")
             return
@@ -73,6 +79,7 @@ class HBNBCommand(cmd.Cmd):
         models.storage.save()
 
     def do_all(self, arg):
+        """Do everything """
         args = arg.split()
         if args and args[0] not in classes:
             print("** class doesn't exist **")
@@ -81,6 +88,7 @@ class HBNBCommand(cmd.Cmd):
                if not args or v.__class__.__name__ == args[0]])
 
     def do_update(self, arg):
+        """Update the user"""
         if not arg:
             print("** class name missing **")
             return
@@ -105,16 +113,20 @@ class HBNBCommand(cmd.Cmd):
         models.storage.save()
 
     def do_quit(self, arg):
+        """Quit"""
         return True
 
     def do_EOF(self, arg):
+        """Similiar to quit"""
         print("")
         return True
 
     def emptyline(self):
+        """emptyline.."""
         pass
 
     def default(self, arg):
+        """If all else fails, refer to this method"""
         args = arg.split(".")
         if len(args) < 2:
             print("** command not found **")
@@ -139,23 +151,22 @@ class HBNBCommand(cmd.Cmd):
             print("** command not found **")
 
 def parse_argument(args):
-    """Parse an argument"""
-    # search for {}
-    data = ""
-    match = re.search(r'{.*}', args)
+    """Parses an argument"""
+    data = None
+    match = re.search(r'{(.*?)}', args)  # Match the shortest sequence enclosed in {}
     if match:
         try:
-            data = json.loads(match.group())
-            args = re.sub(r'{.*}', '', args)
+            data = json.loads(match.group(1))  # Load the matched content as JSON
+            args = re.sub(r'{(.*?)}', '', args)  # Remove the JSON content from args
         except json.JSONDecodeError:
             print("Invalid JSON format")
+
     args = shlex.split(args)
-    if data:
+    if data is not None:
         args.append(data)
     else:
-        args = [int(arg) if arg.isdigit()
-                else arg
-                for arg in args]  # Convert numbers to integers if possible
+        # Convert numeric strings to integers if possible
+        args = [int(arg) if arg.isdigit() else arg for arg in args]
     return args
 
 
